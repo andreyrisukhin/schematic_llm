@@ -1,0 +1,4 @@
+litemapy==0.10.0b0
+nbtlib==2.0.4
+numpy==2.2.3
+typing_extensions==4.12.2

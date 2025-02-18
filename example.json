@@ -1,0 +1,419 @@
+{
+    "type": "compound",
+    "name": "",
+    "value": {
+      "MinecraftDataVersion": {
+        "type": "int",
+        "value": 4189
+      },
+      "Version": {
+        "type": "int",
+        "value": 7
+      },
+      "Metadata": {
+        "type": "compound",
+        "value": {
+          "TimeCreated": {
+            "type": "long",
+            "value": [
+              405,
+              351531538
+            ]
+          },
+          "TimeModified": {
+            "type": "long",
+            "value": [
+              405,
+              351531538
+            ]
+          },
+          "EnclosingSize": {
+            "type": "compound",
+            "value": {
+              "x": {
+                "type": "int",
+                "value": 7
+              },
+              "y": {
+                "type": "int",
+                "value": 4
+              },
+              "z": {
+                "type": "int",
+                "value": 4
+              }
+            }
+          },
+          "Description": {
+            "type": "string",
+            "value": ""
+          },
+          "RegionCount": {
+            "type": "int",
+            "value": 1
+          },
+          "TotalBlocks": {
+            "type": "int",
+            "value": 33
+          },
+          "Author": {
+            "type": "string",
+            "value": "LordThunderpork"
+          },
+          "TotalVolume": {
+            "type": "int",
+            "value": 112
+          },
+          "Name": {
+            "type": "string",
+            "value": "Unnamed"
+          }
+        }
+      },
+      "Regions": {
+        "type": "compound",
+        "value": {
+          "Unnamed": {
+            "type": "compound",
+            "value": {
+              "BlockStates": {
+                "type": "longArray",
+                "value": [
+                  [
+                    16777216,
+                    268435729
+                  ],
+                  [
+                    104145152,
+                    336592896
+                  ],
+                  [
+                    2048,
+                    28672
+                  ],
+                  [
+                    0,
+                    553653264
+                  ],
+                  [
+                    294649856,
+                    0
+                  ],
+                  [
+                    0,
+                    4369
+                  ],
+                  [
+                    858993408,
+                    0
+                  ]
+                ]
+              },
+              "PendingBlockTicks": {
+                "type": "list",
+                "value": {
+                  "type": "end",
+                  "value": []
+                }
+              },
+              "Position": {
+                "type": "compound",
+                "value": {
+                  "x": {
+                    "type": "int",
+                    "value": 0
+                  },
+                  "y": {
+                    "type": "int",
+                    "value": 0
+                  },
+                  "z": {
+                    "type": "int",
+                    "value": 0
+                  }
+                }
+              },
+              "BlockStatePalette": {
+                "type": "list",
+                "value": {
+                  "type": "compound",
+                  "value": [
+                    {
+                      "Name": {
+                        "type": "string",
+                        "value": "minecraft:air"
+                      }
+                    },
+                    {
+                      "Name": {
+                        "type": "string",
+                        "value": "minecraft:white_terracotta"
+                      }
+                    },
+                    {
+                      "Properties": {
+                        "type": "compound",
+                        "value": {
+                          "facing": {
+                            "type": "string",
+                            "value": "west"
+                          },
+                          "extended": {
+                            "type": "string",
+                            "value": "false"
+                          }
+                        }
+                      },
+                      "Name": {
+                        "type": "string",
+                        "value": "minecraft:sticky_piston"
+                      }
+                    },
+                    {
+                      "Properties": {
+                        "type": "compound",
+                        "value": {
+                          "east": {
+                            "type": "string",
+                            "value": "side"
+                          },
+                          "south": {
+                            "type": "string",
+                            "value": "none"
+                          },
+                          "north": {
+                            "type": "string",
+                            "value": "none"
+                          },
+                          "west": {
+                            "type": "string",
+                            "value": "side"
+                          },
+                          "power": {
+                            "type": "string",
+                            "value": "0"
+                          }
+                        }
+                      },
+                      "Name": {
+                        "type": "string",
+                        "value": "minecraft:redstone_wire"
+                      }
+                    },
+                    {
+                      "Properties": {
+                        "type": "compound",
+                        "value": {
+                          "facing": {
+                            "type": "string",
+                            "value": "east"
+                          },
+                          "extended": {
+                            "type": "string",
+                            "value": "false"
+                          }
+                        }
+                      },
+                      "Name": {
+                        "type": "string",
+                        "value": "minecraft:sticky_piston"
+                      }
+                    },
+                    {
+                      "Properties": {
+                        "type": "compound",
+                        "value": {
+                          "east": {
+                            "type": "string",
+                            "value": "side"
+                          },
+                          "south": {
+                            "type": "string",
+                            "value": "side"
+                          },
+                          "north": {
+                            "type": "string",
+                            "value": "none"
+                          },
+                          "west": {
+                            "type": "string",
+                            "value": "none"
+                          },
+                          "power": {
+                            "type": "string",
+                            "value": "0"
+                          }
+                        }
+                      },
+                      "Name": {
+                        "type": "string",
+                        "value": "minecraft:redstone_wire"
+                      }
+                    },
+                    {
+                      "Properties": {
+                        "type": "compound",
+                        "value": {
+                          "face": {
+                            "type": "string",
+                            "value": "floor"
+                          },
+                          "powered": {
+                            "type": "string",
+                            "value": "false"
+                          },
+                          "facing": {
+                            "type": "string",
+                            "value": "south"
+                          }
+                        }
+                      },
+                      "Name": {
+                        "type": "string",
+                        "value": "minecraft:lever"
+                      }
+                    },
+                    {
+                      "Properties": {
+                        "type": "compound",
+                        "value": {
+                          "east": {
+                            "type": "string",
+                            "value": "none"
+                          },
+                          "south": {
+                            "type": "string",
+                            "value": "side"
+                          },
+                          "north": {
+                            "type": "string",
+                            "value": "side"
+                          },
+                          "west": {
+                            "type": "string",
+                            "value": "none"
+                          },
+                          "power": {
+                            "type": "string",
+                            "value": "0"
+                          }
+                        }
+                      },
+                      "Name": {
+                        "type": "string",
+                        "value": "minecraft:redstone_wire"
+                      }
+                    },
+                    {
+                      "Properties": {
+                        "type": "compound",
+                        "value": {
+                          "east": {
+                            "type": "string",
+                            "value": "none"
+                          },
+                          "south": {
+                            "type": "string",
+                            "value": "up"
+                          },
+                          "north": {
+                            "type": "string",
+                            "value": "side"
+                          },
+                          "west": {
+                            "type": "string",
+                            "value": "none"
+                          },
+                          "power": {
+                            "type": "string",
+                            "value": "0"
+                          }
+                        }
+                      },
+                      "Name": {
+                        "type": "string",
+                        "value": "minecraft:redstone_wire"
+                      }
+                    },
+                    {
+                      "Properties": {
+                        "type": "compound",
+                        "value": {
+                          "east": {
+                            "type": "string",
+                            "value": "up"
+                          },
+                          "south": {
+                            "type": "string",
+                            "value": "none"
+                          },
+                          "north": {
+                            "type": "string",
+                            "value": "side"
+                          },
+                          "west": {
+                            "type": "string",
+                            "value": "none"
+                          },
+                          "power": {
+                            "type": "string",
+                            "value": "0"
+                          }
+                        }
+                      },
+                      "Name": {
+                        "type": "string",
+                        "value": "minecraft:redstone_wire"
+                      }
+                    }
+                  ]
+                }
+              },
+              "Size": {
+                "type": "compound",
+                "value": {
+                  "x": {
+                    "type": "int",
+                    "value": 7
+                  },
+                  "y": {
+                    "type": "int",
+                    "value": 4
+                  },
+                  "z": {
+                    "type": "int",
+                    "value": 4
+                  }
+                }
+              },
+              "PendingFluidTicks": {
+                "type": "list",
+                "value": {
+                  "type": "end",
+                  "value": []
+                }
+              },
+              "TileEntities": {
+                "type": "list",
+                "value": {
+                  "type": "end",
+                  "value": []
+                }
+              },
+              "Entities": {
+                "type": "list",
+                "value": {
+                  "type": "end",
+                  "value": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "SubVersion": {
+        "type": "int",
+        "value": 1
+      }
+    }
+  }
