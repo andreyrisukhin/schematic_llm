@@ -15,27 +15,36 @@ def create_rson():
     # Example data
     schematic_name = "2x2 door, origin at door base (0,0,0)" # Door is the volume that moves.
     schematic_behavior = "There are four sticky pistons, two on each side, that push the blocks to create a 2x2 door. There is a lever to activate the pistons. When activated, the 2x2 space is filled with blocks, and when deactivated, the space is empty. There is redstone dust to connect the lever to the pistons.",
+    
+    DOOR_0 = 0
+    DOOR_1 = 1
+    PISTON_OFFSET = 2
+
     door_blocks = [
-        {"position": (0, 0, 0), "block": "minecraft:stone"},
-        {"position": (1, 0, 0), "block": "minecraft:stone"},
-        {"position": (0, 1, 0), "block": "minecraft:stone"},
-        {"position": (1, 1, 0), "block": "minecraft:stone"}
+        {"position": (DOOR_0, 0, 0), "block": "minecraft:stone"},
+        {"position": (DOOR_1, 0, 0), "block": "minecraft:stone"},
+        {"position": (DOOR_0, 1, 0), "block": "minecraft:stone"},
+        {"position": (DOOR_1, 1, 0), "block": "minecraft:stone"},
     ]
     pistons = [
-        {"position": (-1, 0, 0), "block": "minecraft:sticky_piston", "facing": "+x"},
-        {"position": (2, 0, 0), "block": "minecraft:sticky_piston", "facing": "-x"},
-        {"position": (-1, 1, 0), "block": "minecraft:sticky_piston", "facing": "+x"},
-        {"position": (2, 1, 0), "block": "minecraft:sticky_piston", "facing": "-x"}
+        {"position": (DOOR_0-PISTON_OFFSET, 0, 0), "block": "minecraft:sticky_piston", "facing": "+x"},
+        {"position": (DOOR_1+PISTON_OFFSET, 0, 0), "block": "minecraft:sticky_piston", "facing": "-x"},
+        {"position": (DOOR_0-PISTON_OFFSET, 1, 0), "block": "minecraft:sticky_piston", "facing": "+x"},
+        {"position": (DOOR_1+PISTON_OFFSET, 1, 0), "block": "minecraft:sticky_piston", "facing": "-x"},
     ]
     redstone = [
+        {"position": (-2, 2, 0), "block": "minecraft:quartz_block"}, # Potentially need to add redstone orientation... maybe not? Can simulate and block update to update all connections without encoding in llm? That is how I play the game, just place dust and it rotates. 
+        {"position": (-2, 2+1, 0), "block": "minecraft:redstone_dust"},
         {"position": (-1, 2, 0), "block": "minecraft:quartz_block"}, # Potentially need to add redstone orientation... maybe not? Can simulate and block update to update all connections without encoding in llm? That is how I play the game, just place dust and it rotates. 
-        {"position": (-1, 2, 0), "block": "minecraft:redstone_dust"},
+        {"position": (-1, 2+1, 0), "block": "minecraft:redstone_dust"},
         {"position": (0, 2, 0), "block": "minecraft:quartz_block"},
-        {"position": (0, 2, 0), "block": "minecraft:redstone_dust"},
+        {"position": (0, 2+1, 0), "block": "minecraft:redstone_dust"},
         {"position": (1, 2, 0), "block": "minecraft:quartz_block"},
-        {"position": (1, 2, 0), "block": "minecraft:redstone_dust"},
+        {"position": (1, 2+1, 0), "block": "minecraft:redstone_dust"},
         {"position": (2, 2, 0), "block": "minecraft:quartz_block"},
-        {"position": (2, 2, 0), "block": "minecraft:redstone_dust"}
+        {"position": (2, 2+1, 0), "block": "minecraft:redstone_dust"},
+        {"position": (3, 2, 0), "block": "minecraft:quartz_block"},
+        {"position": (3, 2+1, 0), "block": "minecraft:redstone_dust"},
     ]
     lever = [
         {"position": (2, 2, 1), "block": "minecraft:lever", "attached_to": "quartz_block", "facing": "-z"}

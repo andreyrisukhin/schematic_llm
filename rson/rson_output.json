@@ -41,7 +41,7 @@
         "pistons": [
             {
                 "position": [
-                    -1,
+                    -2,
                     0,
                     0
                 ],
@@ -50,7 +50,7 @@
             },
             {
                 "position": [
-                    2,
+                    3,
                     0,
                     0
                 ],
@@ -59,7 +59,7 @@
             },
             {
                 "position": [
-                    -1,
+                    -2,
                     1,
                     0
                 ],
@@ -68,7 +68,7 @@
             },
             {
                 "position": [
-                    2,
+                    3,
                     1,
                     0
                 ],
@@ -79,6 +79,22 @@
         "redstone": [
             {
                 "position": [
+                    -2,
+                    2,
+                    0
+                ],
+                "block": "minecraft:quartz_block"
+            },
+            {
+                "position": [
+                    -2,
+                    3,
+                    0
+                ],
+                "block": "minecraft:redstone_dust"
+            },
+            {
+                "position": [
                     -1,
                     2,
                     0
@@ -88,7 +104,7 @@
             {
                 "position": [
                     -1,
-                    2,
+                    3,
                     0
                 ],
                 "block": "minecraft:redstone_dust"
@@ -104,7 +120,7 @@
             {
                 "position": [
                     0,
-                    2,
+                    3,
                     0
                 ],
                 "block": "minecraft:redstone_dust"
@@ -120,7 +136,7 @@
             {
                 "position": [
                     1,
-                    2,
+                    3,
                     0
                 ],
                 "block": "minecraft:redstone_dust"
@@ -136,7 +152,23 @@
             {
                 "position": [
                     2,
+                    3,
+                    0
+                ],
+                "block": "minecraft:redstone_dust"
+            },
+            {
+                "position": [
+                    3,
                     2,
+                    0
+                ],
+                "block": "minecraft:quartz_block"
+            },
+            {
+                "position": [
+                    3,
+                    3,
                     0
                 ],
                 "block": "minecraft:redstone_dust"
