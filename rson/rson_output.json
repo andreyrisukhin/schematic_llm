@@ -1,0 +1,158 @@
+{
+    "schematic_name": "2x2 door, origin at door base (0,0,0)",
+    "schematic_behavior": [
+        "There are four sticky pistons, two on each side, that push the blocks to create a 2x2 door. There is a lever to activate the pistons. When activated, the 2x2 space is filled with blocks, and when deactivated, the space is empty. There is redstone dust to connect the lever to the pistons."
+    ],
+    "blocks": {
+        "door": [
+            {
+                "position": [
+                    0,
+                    0,
+                    0
+                ],
+                "block": "minecraft:stone"
+            },
+            {
+                "position": [
+                    1,
+                    0,
+                    0
+                ],
+                "block": "minecraft:stone"
+            },
+            {
+                "position": [
+                    0,
+                    1,
+                    0
+                ],
+                "block": "minecraft:stone"
+            },
+            {
+                "position": [
+                    1,
+                    1,
+                    0
+                ],
+                "block": "minecraft:stone"
+            }
+        ],
+        "pistons": [
+            {
+                "position": [
+                    -1,
+                    0,
+                    0
+                ],
+                "block": "minecraft:sticky_piston",
+                "facing": "+x"
+            },
+            {
+                "position": [
+                    2,
+                    0,
+                    0
+                ],
+                "block": "minecraft:sticky_piston",
+                "facing": "-x"
+            },
+            {
+                "position": [
+                    -1,
+                    1,
+                    0
+                ],
+                "block": "minecraft:sticky_piston",
+                "facing": "+x"
+            },
+            {
+                "position": [
+                    2,
+                    1,
+                    0
+                ],
+                "block": "minecraft:sticky_piston",
+                "facing": "-x"
+            }
+        ],
+        "redstone": [
+            {
+                "position": [
+                    -1,
+                    2,
+                    0
+                ],
+                "block": "minecraft:quartz_block"
+            },
+            {
+                "position": [
+                    -1,
+                    2,
+                    0
+                ],
+                "block": "minecraft:redstone_dust"
+            },
+            {
+                "position": [
+                    0,
+                    2,
+                    0
+                ],
+                "block": "minecraft:quartz_block"
+            },
+            {
+                "position": [
+                    0,
+                    2,
+                    0
+                ],
+                "block": "minecraft:redstone_dust"
+            },
+            {
+                "position": [
+                    1,
+                    2,
+                    0
+                ],
+                "block": "minecraft:quartz_block"
+            },
+            {
+                "position": [
+                    1,
+                    2,
+                    0
+                ],
+                "block": "minecraft:redstone_dust"
+            },
+            {
+                "position": [
+                    2,
+                    2,
+                    0
+                ],
+                "block": "minecraft:quartz_block"
+            },
+            {
+                "position": [
+                    2,
+                    2,
+                    0
+                ],
+                "block": "minecraft:redstone_dust"
+            }
+        ],
+        "lever": [
+            {
+                "position": [
+                    2,
+                    2,
+                    1
+                ],
+                "block": "minecraft:lever",
+                "attached_to": "quartz_block",
+                "facing": "-z"
+            }
+        ]
+    }
+}
