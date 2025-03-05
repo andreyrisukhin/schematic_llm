@@ -13,3 +13,12 @@
 ## Maybe 
 * If few shot prompt fails on complex tasks, finetune llm
 * RSON piston placement validator? More work to calculate, firing seq important, maybe cheaper to just test in game simulator.
+
+
+
+## Updates, Thoughts
+* `litemapy` does not work with .schem files
+* `minecraftschematics` also does not, due to version mismatch (schematic v2 accepted, we use schematic v3)
+    * Converting?
+    * Using an older version of minecraft?
+    * Updating the minecraftschematics code?
