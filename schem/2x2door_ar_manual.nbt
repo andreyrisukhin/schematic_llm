@@ -1,0 +1,38 @@
+{
+  Schematic: {
+    Version: 3,
+    DataVersion: 4189,
+    Metadata: {
+      Date: 1741138531212L,
+      WorldEdit: {
+        Version: "7.3.10",
+        EditingPlatform: "enginehub:fabric",
+        Origin: [I;589,58,258],
+        Platforms: {
+          enginehub:fabric: {
+            Name: "Fabric-Official",
+            Version: "7.3.10+7004-768a436"
+          }
+        }
+      }
+    },
+    Width: 2s,
+    Height: 7s,
+    Length: 6s,
+    Offset: [I;3,-3,-3],
+    Blocks: {
+      Palette: {
+        minecraft:air: 0,
+        minecraft:sticky_piston[extended=false,facing=south]: 1,
+        minecraft:smooth_stone: 2,
+        minecraft:sticky_piston[extended=false,facing=north]: 3,
+        minecraft:quartz_block: 4,
+        minecraft:redstone_wire[east=none,north=side,power=0,south=side,west=none]: 5,
+        minecraft:lever[face=floor,facing=east,powered=false]: 6,
+        minecraft:redstone_wire[east=none,north=side,power=0,south=none,west=side]: 7
+      },
+      Data: [B;0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,0B,1B,0B,2B,0B,0B,0B,0B,0B,2B,0B,3B,0B,1B,0B,2B,0B,0B,0B,0B,0B,2B,0B,3B,0B,4B,0B,4B,0B,4B,0B,4B,0B,4B,4B,4B,0B,5B,0B,5B,0B,5B,0B,5B,0B,5B,6B,7B],
+      BlockEntities: []
+    }
+  }
+}

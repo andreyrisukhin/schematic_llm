@@ -8,6 +8,15 @@ import os
 # import litemapy as lm
 import minecraftschematics as ms
 
+from nbtlib import File
+
+def nbtlib_schem_to_rson(file_path):
+    with open(file_path, 'rb') as f:
+        nbt_file = File.parse(f)
+
+    print(f'{nbt_file=}')
+
+
 def schem_to_rson(file_path):
     # Read the .schem file
     # try:
@@ -56,18 +65,75 @@ def read_rson_file(file):
         data = json.load(f)
     return data
 
+
+
+
+import re
+
+# def convert_to_json(input_str):
+#     # # Replace single-letter suffixes (e.g., `2s`, `4189L`, `5B`) with just the number
+#     # input_str = re.sub(r'(\d+)[sSB]', r'\1', input_str)  # Remove `s`, `S`, `B` suffixes
+#     # input_str = re.sub(r'(\d+)L', r'\1', input_str)  # Remove `L` suffix
+    
+#     # Replace unquoted keys with quoted keys
+#     input_str = re.sub(r'(\{|,)\s*([\w:]+)\s*:', r'\1 "\2":', input_str)
+    
+#     # # Replace `[I; ...]` and `[B; ...]` with standard lists
+#     # input_str = re.sub(r'\[I; ([^]]+)]', r'[\1]', input_str)
+#     # input_str = re.sub(r'\[B; ([^]]+)]', r'[\1]', input_str)
+    
+#     # Convert to valid JSON
+#     input_str = input_str.replace("'", '"')  # Ensure all quotes are double quotes
+    
+#     return json.loads(input_str)
+
+def fix_json_like_string(s):
+    # Fix keys (unquoted words before colons)
+    s = re.sub(r'(?<!["{\[])\b([A-Za-z_][A-Za-z0-9_]*)\b(?=\s*:)', r'"\1"', s)
+    
+    # Fix unquoted string values (not already quoted, followed by comma, brace, bracket, or newline)
+    s = re.sub(r':\s*([^"{\[0-9\-tfn])([^,:}\]])*', r': "\1\2"', s)
+    
+    # Fix long integers (trailing 'L')
+    s = re.sub(r'(\d+)L', r'\1', s)
+    
+    # Fix short integers (trailing 's')
+    s = re.sub(r'(\d+)s', r'\1', s)
+    
+    # Fix array prefixes ([I;, [B;, etc.)
+    s = re.sub(r'\[([IBSLF]);', r'"\1-array":', s)
+    
+    return s
+
+
+
 def main():
     # Example usage
     schem_file = "../schem/2x2door.schem"
     rson_file = "../schem/2x2door.json"
 
-    # Convert .schem to rson
-    rson_data = schem_to_rson(schem_file)
-    write_rson_file(rson_data, rson_file)
+    # Example input
+    input_str = '''{Schematic: {Version: 3, DataVersion: 4189, Metadata: {Date: 1741138531212L, WorldEdit: {Version: "7.3.10", EditingPlatform: "enginehub:fabric", Origin: [I; 589, 58, 258], Platforms: {"enginehub:fabric": {Name: "Fabric-Official", Version: "7.3.10+7004-768a436"}}}}, Width: 2s, Height: 7s, Length: 6s, Offset: [I; 3, -3, -3], Blocks: {Palette: {"minecraft:air": 0, "minecraft:sticky_piston[extended=false,facing=south]": 1, "minecraft:smooth_stone": 2, "minecraft:sticky_piston[extended=false,facing=north]": 3, "minecraft:quartz_block": 4, "minecraft:redstone_wire[east=none,north=side,power=0,south=side,west=none]": 5, "minecraft:lever[face=floor,facing=east,powered=false]": 6, "minecraft:redstone_wire[east=none,north=side,power=0,south=none,west=side]": 7}, Data: [B; 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 0B, 1B, 0B, 2B, 0B, 0B, 0B, 0B, 0B, 2B, 0B, 3B, 0B, 1B, 0B, 2B, 0B, 0B, 0B, 0B, 0B, 2B, 0B, 3B, 0B, 4B, 0B, 4B, 0B, 4B, 0B, 4B, 0B, 4B, 4B, 4B, 0B, 5B, 0B, 5B, 0B, 5B, 0B, 5B, 0B, 5B, 6B, 7B], BlockEntities: []}}}'''
 
-    # Convert rson to .schem
-    rson_data = read_rson_file(rson_file)
-    rson_to_schem(rson_data, "../schem/2x2door_new.schem")
+    # Convert and print JSON
+    parsed_json = fix_json_like_string(input_str)
+    schem = json.dumps(parsed_json, indent=2)
+    # print()
+
+    # Write to file
+    with open("schem_test.json", 'w') as f:
+        f.write(schem)
+
+
+    nbtlib_schem_to_rson(schem_file)
+
+    # # Convert .schem to rson
+    # rson_data = schem_to_rson(schem_file)
+    # write_rson_file(rson_data, rson_file)
+
+    # # Convert rson to .schem
+    # rson_data = read_rson_file(rson_file)
+    # rson_to_schem(rson_data, "../schem/2x2door_new.schem")
 
 
 if __name__ == "__main__":

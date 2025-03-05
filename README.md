@@ -22,3 +22,7 @@
     * Converting?
     * Using an older version of minecraft?
     * Updating the minecraftschematics code?
+
+
+Use `nbt -r ../schem/2x2door.schem > ../schem/2x2door_out` to convert via CLI
+
