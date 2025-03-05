@@ -5,17 +5,26 @@ Converts between .schem and rson files.
 import json
 import os
 
-# import litemapy as lm
-import minecraftschematics as ms
+import litemapy as lm
+# import minecraftschematics as ms
+import nbtlib
 
 def schem_to_rson(file_path):
     # Read the .schem file
     # try:
+
+    nbt_file = nbtlib.load(file_path)
+    print(f'{nbt_file=}')
+    # Look at nbtlib docs to extract file 
+
+    schematic = lm.Schematic.from_nbt(nbt_file)
+
     # schematic = lm.Schematic.load(file_path)
-    schematic = ms.Schematic.load(file_path)
+    # schematic = ms.Schematic.load(file_path)
 
     # ms.Schematic.
 
+    print(f'{schematic=}')
     print(f'{schematic.block_entities=}')
 
     # rson_data = {
