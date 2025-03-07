@@ -2,16 +2,18 @@
 bulk process .schematic files to .json files
 """
 
-import schem2rson
+from schem2rson import schem_to_rson, litematic_to_rson, schematic_to_rson
+
 import os
 import json
 
 def main():
     dataset_dir = "../dataset/raw"
-    output_dir = "../dataset/processed"
+    output_dir = "../dataset/all_json"
+
+    vol_limit = 1700
 
     skip_bedrock_files = [6726, 6722]
-
     # TODO skip command block files
 
     skip_files_with = ['minecraft:sign', 'age:']
@@ -27,19 +29,59 @@ def main():
     errored = []
 
     for file in os.listdir(dataset_dir):
-        # if file.endswith(".schematic"):
-        file_path = os.path.join(dataset_dir, file)
-        try:
-            data = schem2rson.schem_to_rson(file_path)
-            output_file = os.path.join(output_dir, f'{file}.json')
-            with open(output_file, 'w') as f:
-                json.dump(data, f)
+        if file.endswith(".schematic"):
+            
+            # continue # Until I parse the blocks well
+            
+            file_path = os.path.join(dataset_dir, file)
+            try:
+                data = schematic_to_rson(file_path)
+                # # If data is too big, skip
+                # if data['volume_width'] * data['volume_height'] * data['volume_length'] > vol_limit:
+                #     continue
 
-        except Exception as e:
-            print(f'Error processing {file_path}: {e}')
+                output_file = os.path.join(output_dir, f'{file}.json')
+                with open(output_file, 'w') as f:
+                    json.dump(data, f)
+            except Exception as e:
+                print(f'Error processing {file_path}: {e}')
+                errored.append(file_path)
 
-            # Save error'd file strings, output to a file
-            errored.append(file_path)
+        elif file.endswith(".litematic"):
+            file_path = os.path.join(dataset_dir, file)
+            try:
+                data = litematic_to_rson(file_path)
+                # # If data is too big, skip
+                # if data['volume_width'] * data['volume_height'] * data['volume_length'] > vol_limit:
+                #     continue
+
+                # If data blocks has weird longs, skip
+                # if any([any([any([len(str(b)) > 4 for b in row]) for row in layer]) for layer in data['block_positions']]):
+                #     continue
+
+                if data:
+                    output_file = os.path.join(output_dir, f'{file}.json')
+                    with open(output_file, 'w') as f:
+                        json.dump(data, f)
+            except Exception as e:
+                print(f'Error processing {file_path}: {e}')
+                errored.append(file_path)
+
+        elif file.endswith(".schem"):                
+            file_path = os.path.join(dataset_dir, file)
+            try:
+                data = schem_to_rson(file_path)
+
+                # # If data is too big, skip
+                # if data['volume_width'] * data['volume_height'] * data['volume_length'] > vol_limit:
+                #     continue
+
+                output_file = os.path.join(output_dir, f'{file}.json')
+                with open(output_file, 'w') as f:
+                    json.dump(data, f)
+            except Exception as e:
+                print(f'Error processing {file_path}: {e}')
+                errored.append(file_path)
 
     with open('errored_files.txt', 'w') as f:
         for file in errored:
