@@ -120,8 +120,38 @@ def litematic_to_rson(file_path):
 
 def schematic_to_rson(file_path, CLUSTER_COORDS=False):
 
-    if CLUSTER_COORDS:
-        pass
+    if CLUSTER_COORDS: # Reformat palette and blocks to be "block": [(x,y,z), (x,y,z), ...]
+        nbt_file = nbtlib.load(file_path)
+
+        height = int(nbt_file["Height"])
+        length = int(nbt_file["Length"])
+        width = int(nbt_file["Width"])
+        
+        block_bytes = nbt_file["Blocks"]
+        block_bytes = list(block_bytes)
+        block_ids = [int(b) for b in block_bytes]
+        blocks = id_to_block(block_ids)
+
+        # Reformat blocks to be "block": [(x,y,z), (x,y,z), ...]
+        clustered_blocks = {}
+        for block in blocks:
+            clustered_blocks[block] = []
+
+        for i, block in enumerate(blocks):
+            x = i % width
+            y = (i // width) % height
+            z = i // (width * height)
+            clustered_blocks[block].append((x, y, z))
+
+        # Sort clustered_blocks by alphabetical order
+        clustered_blocks = dict(sorted(clustered_blocks.items()))
+
+        data = {
+            "width": width,
+            "height": height,
+            "length": length,
+            "block_positions": clustered_blocks
+        }
 
     else:
         nbt_file = nbtlib.load(file_path)
@@ -144,22 +174,20 @@ def schematic_to_rson(file_path, CLUSTER_COORDS=False):
             "height": height,
             "length": length,
             "block_to_id": "Blocks are directly in positions.",
-            "block_positions": blocks_3d
+            "id_positions": blocks_3d
         }
 
     return data
 
 
 def main():
-    # print(f'on')
-
     # schem_file = "../dataset/raw/17128.litematic" 
-    schem_file = "../schem/compass.schem"
-    # schematic_to_litematic(schem_file)
+    # schem_file = "../schem/compass.schem"
+    schem_file = "../dataset/raw/261.schematic"
 
-    data = schem_to_rson(schem_file, CLUSTER_COORDS=True)
+    # data = schem_to_rson(schem_file, CLUSTER_COORDS=True)
     # data = litematic_to_rson(schem_file)
-    # data = schematic_to_rson(schem_file)
+    data = schematic_to_rson(schem_file, CLUSTER_COORDS=True)
     print(f'{data=}')
 
 if __name__ == "__main__":
