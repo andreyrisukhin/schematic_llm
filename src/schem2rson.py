@@ -19,8 +19,37 @@ def schem_to_rson(file_path, CLUSTER_COORDS=False):
     """"
     Converts a .schem file to a rson file.
     """
-    if CLUSTER_COORDS:
-        pass
+    if CLUSTER_COORDS: # Reformat palette and blocks to be "block": [(x,y,z), (x,y,z), ...]
+        nbt_file = nbtlib.load(file_path)
+        schem = nbt_file["Schematic"]
+        blocks = schem["Blocks"]
+        rson_palette = {key: int(value) for key, value in blocks["Palette"].items()}
+        print(f'{rson_palette=}')
+
+        rson_data = [int(value) for value in blocks["Data"]] # Convert byte to int
+        
+        clustered_blocks = {}
+        for block, block_id in rson_palette.items():
+            clustered_blocks[block] = []
+
+        # Reverse dictionary
+        rson_reverse_palette = {v: k for k, v in rson_palette.items()}
+
+        for i, block_id in enumerate(rson_data):
+            # print(f'{i=}, {block_id=}')
+            block = rson_reverse_palette[block_id]
+            x = i % int(schem["Width"])
+            y = (i // int(schem["Width"])) % int(schem["Height"])
+            z = i // (int(schem["Width"]) * int(schem["Height"]))
+            clustered_blocks[block].append((x, y, z))
+
+        data = {
+            "width": int(schem["Width"]),
+            "height": int(schem["Height"]),
+            "length": int(schem["Length"]),
+            "block_positions": clustered_blocks
+        }
+
     else:
         nbt_file = nbtlib.load(file_path)
         
@@ -126,13 +155,14 @@ def schematic_to_rson(file_path):
 def main():
     # print(f'on')
 
-    schem_file = "../dataset/raw/17128.litematic" #"../dataset/raw/22096.litematic" #"../schem/compass.schem"
+    # schem_file = "../dataset/raw/17128.litematic" 
+    schem_file = "../schem/compass.schem"
     # schematic_to_litematic(schem_file)
 
-    # rson_data = schem_to_rson(schem_file)
-    data = litematic_to_rson(schem_file)
+    data = schem_to_rson(schem_file, CLUSTER_COORDS=True)
+    # data = litematic_to_rson(schem_file)
     # data = schematic_to_rson(schem_file)
-    # print(f'{data=}')
+    print(f'{data=}')
 
 if __name__ == "__main__":
     main()
