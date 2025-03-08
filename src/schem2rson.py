@@ -59,7 +59,7 @@ def schem_to_rson(file_path):
         
 def litematic_to_rson(file_path):
     nbt_file = nbtlib.load(file_path)
-    print(f'{nbt_file=}')
+    # print(f'{nbt_file=}')
 
     metadata = nbt_file['Metadata']
     # print(f'{metadata=}')
