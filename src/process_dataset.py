@@ -9,22 +9,26 @@ import json
 
 def main():
     dataset_dir = "../dataset/raw"
-    output_dir = "../dataset/all_json"
+    output_dir = "../dataset/no_air"
 
-    vol_limit = 1700
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+        print(f'Created {output_dir}')
 
-    skip_bedrock_files = [6726, 6722]
-    # TODO skip command block files
+    # vol_limit = 1700
 
-    skip_files_with = ['minecraft:sign', 'age:']
-    # Signs have too much info 22059.litematic
-    # Different ages should be consolidated, for now skip farms
+    # skip_bedrock_files = [6726, 6722]
+    # # TODO skip command block files
 
-    # TODO skip "Properties" array in nbt data of a block, player can figure it out and takes up data
-    # Assume piston always extended false, always facing north
+    # skip_files_with = ['minecraft:sign', 'age:']
+    # # Signs have too much info 22059.litematic
+    # # Different ages should be consolidated, for now skip farms
+
+    # # TODO skip "Properties" array in nbt data of a block, player can figure it out and takes up data
+    # # Assume piston always extended false, always facing north
 
 
-    # TODO replace all respective non-redstone blocks to be transparent (glass), solid (stone)
+    # # TODO replace all respective non-redstone blocks to be transparent (glass), solid (stone)
 
     errored = []
 
@@ -35,7 +39,7 @@ def main():
             
             file_path = os.path.join(dataset_dir, file)
             try:
-                data = schematic_to_rson(file_path)
+                data = schematic_to_rson(file_path, CLUSTER_COORDS=True)
                 # # If data is too big, skip
                 # if data['volume_width'] * data['volume_height'] * data['volume_length'] > vol_limit:
                 #     continue
@@ -48,30 +52,32 @@ def main():
                 errored.append(file_path)
 
         elif file.endswith(".litematic"):
-            file_path = os.path.join(dataset_dir, file)
-            try:
-                data = litematic_to_rson(file_path)
-                # # If data is too big, skip
-                # if data['volume_width'] * data['volume_height'] * data['volume_length'] > vol_limit:
-                #     continue
+            pass # Skip litematics for now
 
-                # If data blocks has weird longs, skip
-                # if any([any([any([len(str(b)) > 4 for b in row]) for row in layer]) for layer in data['block_positions']]):
-                #     continue
+            # file_path = os.path.join(dataset_dir, file)
+            # try:
+            #     data = litematic_to_rson(file_path)
+            #     # # If data is too big, skip
+            #     # if data['volume_width'] * data['volume_height'] * data['volume_length'] > vol_limit:
+            #     #     continue
 
-                if data:
-                    output_file = os.path.join(output_dir, f'{file}.json')
-                    with open(output_file, 'w') as f:
-                        json.dump(data, f)
-            except Exception as e:
-                print(f'Error processing {file_path}: {e}')
-                errored.append(file_path)
+            #     # If data blocks has weird longs, skip
+            #     # if any([any([any([len(str(b)) > 4 for b in row]) for row in layer]) for layer in data['block_positions']]):
+            #     #     continue
+
+            #     if data:
+            #         output_file = os.path.join(output_dir, f'{file}.json')
+            #         with open(output_file, 'w') as f:
+            #             json.dump(data, f)
+            # except Exception as e:
+            #     print(f'Error processing {file_path}: {e}')
+            #     errored.append(file_path)
 
         elif file.endswith(".schem"):                
             file_path = os.path.join(dataset_dir, file)
             try:
-                data = schem_to_rson(file_path)
-
+                data = schem_to_rson(file_path, CLUSTER_COORDS=True)
+                
                 # # If data is too big, skip
                 # if data['volume_width'] * data['volume_height'] * data['volume_length'] > vol_limit:
                 #     continue

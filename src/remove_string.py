@@ -17,8 +17,8 @@ def remove_str(file_path, new_file_path, strings_to_remove):
 
 
 if __name__ == '__main__':
-    dir = "../dataset/all_json"
-    new_dir = "../dataset/all_json_no_quotes_no_minecraft"
+    dir = "../dataset/no_air"
+    new_dir = "../dataset/no_air_no_quotes_no_minecraft"
     if not os.path.exists(new_dir):
         os.makedirs(new_dir)
 

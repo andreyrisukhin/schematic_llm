@@ -43,6 +43,12 @@ def schem_to_rson(file_path, CLUSTER_COORDS=False):
             z = i // (int(schem["Width"]) * int(schem["Height"]))
             clustered_blocks[block].append((x, y, z))
 
+        # Sort clustered_blocks by alphabetical order
+        clustered_blocks = dict(sorted(clustered_blocks.items()))
+
+        # Remove air blocks
+        clustered_blocks.pop("minecraft:air", None)
+
         data = {
             "width": int(schem["Width"]),
             "height": int(schem["Height"]),
@@ -146,6 +152,9 @@ def schematic_to_rson(file_path, CLUSTER_COORDS=False):
         # Sort clustered_blocks by alphabetical order
         clustered_blocks = dict(sorted(clustered_blocks.items()))
 
+        # Remove air blocks
+        clustered_blocks.pop("air", None)
+
         data = {
             "width": width,
             "height": height,
@@ -182,12 +191,12 @@ def schematic_to_rson(file_path, CLUSTER_COORDS=False):
 
 def main():
     # schem_file = "../dataset/raw/17128.litematic" 
-    # schem_file = "../schem/compass.schem"
-    schem_file = "../dataset/raw/261.schematic"
+    schem_file = "../schem/compass.schem"
+    # schem_file = "../dataset/raw/261.schematic"
 
-    # data = schem_to_rson(schem_file, CLUSTER_COORDS=True)
+    data = schem_to_rson(schem_file, CLUSTER_COORDS=True)
     # data = litematic_to_rson(schem_file)
-    data = schematic_to_rson(schem_file, CLUSTER_COORDS=True)
+    # data = schematic_to_rson(schem_file, CLUSTER_COORDS=True)
     print(f'{data=}')
 
 if __name__ == "__main__":
