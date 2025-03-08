@@ -24,7 +24,7 @@ def schem_to_rson(file_path, CLUSTER_COORDS=False):
         schem = nbt_file["Schematic"]
         blocks = schem["Blocks"]
         rson_palette = {key: int(value) for key, value in blocks["Palette"].items()}
-        print(f'{rson_palette=}')
+        # print(f'{rson_palette=}')
 
         rson_data = [int(value) for value in blocks["Data"]] # Convert byte to int
         
@@ -118,36 +118,34 @@ def litematic_to_rson(file_path):
 
     return data
 
-def schematic_to_rson(file_path):
-    nbt_file = nbtlib.load(file_path)
-    # print(f'{nbt_file=}')
+def schematic_to_rson(file_path, CLUSTER_COORDS=False):
 
-    height = int(nbt_file["Height"])
-    length = int(nbt_file["Length"])
-    width = int(nbt_file["Width"])
-    
-    block_bytes = nbt_file["Blocks"]
-    block_bytes = list(block_bytes)
-    block_ids = [int(b) for b in block_bytes]
-    blocks = id_to_block(block_ids)
+    if CLUSTER_COORDS:
+        pass
 
-    # data = nbt_file["Data"] 
-    # print(f'{len(data)=}, {len(blocks)=}') # Same length
+    else:
+        nbt_file = nbtlib.load(file_path)
 
-    # NEED TO CONVERT, schematic seems to refer to "alpha" material encoding
-    # materials = nbt_file["Materials"]
+        height = int(nbt_file["Height"])
+        length = int(nbt_file["Length"])
+        width = int(nbt_file["Width"])
+        
+        block_bytes = nbt_file["Blocks"]
+        block_bytes = list(block_bytes)
+        block_ids = [int(b) for b in block_bytes]
+        blocks = id_to_block(block_ids)
 
-    # Reshape blocks into 3d array
-    blocks_3d = np.reshape(blocks, (height, length, width)).tolist()
+        # Reshape blocks into 3d array
+        blocks_3d = np.reshape(blocks, (height, length, width)).tolist()
 
-    # Write data to json
-    data = {
-        "width": width,
-        "height": height,
-        "length": length,
-        "block_to_id": "Blocks are directly in positions.",
-        "block_positions": blocks_3d
-    }
+        # Write data to json
+        data = {
+            "width": width,
+            "height": height,
+            "length": length,
+            "block_to_id": "Blocks are directly in positions.",
+            "block_positions": blocks_3d
+        }
 
     return data
 
