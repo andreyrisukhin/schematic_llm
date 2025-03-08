@@ -15,45 +15,27 @@ from nbtlib import File
 
 from alpha_materials import id_to_block
 
-def schem_to_rson(file_path):
-    # Can read the .schem file
-    nbt_file = nbtlib.load(file_path)
-    # print(f'{nbt_file=}')
+def schem_to_rson(file_path, CLUSTER_COORDS=False):
+    """"
+    Converts a .schem file to a rson file.
+    """
+    if CLUSTER_COORDS:
+        pass
+    else:
+        nbt_file = nbtlib.load(file_path)
+        
+        schem = nbt_file["Schematic"]
+        blocks = schem["Blocks"]
+        rson_palette = {key: int(value) for key, value in blocks["Palette"].items()}
+        rson_data = [int(value) for value in blocks["Data"]] # Convert byte to int
 
-    schem = nbt_file["Schematic"]
-    width = int(schem["Width"])
-    height = int(schem["Height"])
-    length = int(schem["Length"])
-    # print(f'{width=}, {height=}, {length=}')    
-    
-    blocks = schem["Blocks"]
-    # print(f'{blocks=}')
-
-    palette = blocks["Palette"]
-    rson_palette = {}
-    for key, value in palette.items():
-        rson_palette[key] = int(value)
-    # print(f'{rson_palette=}')
-
-    data = blocks["Data"]
-    rson_data = []
-    for value in data:
-        rson_data.append(int(value))
-    # print(f'{rson_data=}')
-
-    # reshape the 1d array to 3d using length, width, height
-    # rson_data_3d = np.reshape(rson_data, (height, length, width)).tolist()
-    # print(f'{rson_data_3d=}') # Looks like [[x col] [x col] [x col]], another y layer, 
-
-
-    # Write data to json
-    data = {
-        "width": width,
-        "height": height,
-        "length": length,
-        "block_to_id": rson_palette,
-        "id_positions": rson_data
-    }
+        data = {
+            "width": int(schem["Width"]),
+            "height": int(schem["Height"]),
+            "length": int(schem["Length"]),
+            "block_to_id": rson_palette,
+            "id_positions": rson_data
+        }
 
     return data
         
