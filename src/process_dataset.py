@@ -8,8 +8,8 @@ import os
 import json
 
 def main():
-    dataset_dir = "../dataset/raw"
-    output_dir = "../dataset/no_air"
+    dataset_dir = "../dataset/mumbo" #"../dataset/raw"
+    output_dir = "../dataset/doors_clean" #"../dataset/no_air"
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
