@@ -39,18 +39,40 @@ def verify_syntax(text) -> str:
 
 
 def text_to_blocks(text) -> Dict[str, List[Tuple[int, int, int]]]:
+    """
+    Given text with matched {[()]}, with form {key: [[x1, y1, z1], [x2, y2, z2], ...]},
+    return a dict of block names and coordinates.
+    """
     blocks = {}
-    lines = text.split('\n')
-    for line in lines:
-        if line.strip() == '':
-            continue
-        parts = line.split(':')
-        block_name = parts[0].strip()
-        coords = parts[1].strip().split(',')
-        coords = [tuple(map(int, coord.strip().split())) for coord in coords]
-        blocks[block_name] = coords
-    return blocks
 
+    text = text[1:-1] # Remove the outer { }
+
+    parts = text.split("]],") # Split by "]],"
+    for part in parts:
+        part += "]]" # Add the missing ]]
+        
+        # Replace ' ' with ''
+        part = part.replace(' ', '')
+
+        # print(f'{part=}')
+        # Split by ":"
+        key, value = part.split(":")
+
+        # Remove the outer [ ]
+        value = value[1:-1]
+        print(f'{key=}, {value=}')
+
+        # Split values into the [x,y,z] tuples
+        tuples = value.split("],")
+        # Remove '[' ']'
+
+        print(f'{tuples=}')
+
+        # Split by "],"
+        coords = value.split("],")
+        coords = [tuple(map(int, coord.strip().split(','))) for coord in coords]
+        blocks[key] = coords
+    return blocks
 
 if __name__ == '__main__':
     # import sys
