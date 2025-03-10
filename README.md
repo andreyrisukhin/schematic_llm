@@ -26,3 +26,11 @@
 
 Use `nbt -r ../schem/2x2door.schem > ../schem/2x2door_out` to convert via CLI
 
+Around 384 blocks worked (`22833, 21504`), and 1760 (`21251`) did not.
+
+is the limit? Search for files (.schem, .schematic, .litematic) with blocks in this range, convert them.
+
+Next, look at effect of many different block variations; grid of just air is less than grid of each block different.
+
+
+
