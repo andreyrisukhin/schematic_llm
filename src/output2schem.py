@@ -50,29 +50,24 @@ def text_to_blocks(text) -> Dict[str, List[Tuple[int, int, int]]]:
     parts = text.split("]],") # Split by "]],"
     for part in parts:
         part += "]]" # Add the missing ]]
-        
-        # Replace ' ' with ''
         part = part.replace(' ', '')
-
-        # print(f'{part=}')
-        # Split by ":"
         key, value = part.split(":")
+        value = value[1:-1] # Remove the outer [ ]
+        tuples = value.split("],") # Split values into the [x,y,z] tuples
+        tuples = [t.replace('[', '').replace(']', '') for t in tuples]
 
-        # Remove the outer [ ]
-        value = value[1:-1]
-        print(f'{key=}, {value=}')
-
-        # Split values into the [x,y,z] tuples
-        tuples = value.split("],")
-        # Remove '[' ']'
-
-        print(f'{tuples=}')
-
-        # Split by "],"
-        coords = value.split("],")
-        coords = [tuple(map(int, coord.strip().split(','))) for coord in coords]
+        coords = []
+        for t in tuples:
+            x, y, z = t.split(',')
+            coords.append((int(x), int(y), int(z)))
+            
         blocks[key] = coords
     return blocks
+
+def blocks_to_schem(blocks):
+    """Given a dict of str blocks and their coordinates, return a schematic."""
+
+    
 
 if __name__ == '__main__':
     # import sys
