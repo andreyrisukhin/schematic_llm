@@ -7,7 +7,7 @@ Once coded, next steps include:
 
 import mcschematic as ms
 
-def add_base_layer(silo:ms.MCSchematic):
+def _add_base_layer(silo:ms.MCSchematic):
     # base_layer = ms.MCSchematic()
     silo.setBlock((0,0,0), "minecraft:stone")
     silo.setBlock((1,0,0), "minecraft:barrel")
@@ -19,7 +19,7 @@ def add_base_layer(silo:ms.MCSchematic):
     # base_layer.save(".", "silo_base", ms.Version.JE_1_18_2)
     return silo
 
-def add_layer_A(silo:ms.MCSchematic, i:int):
+def _add_layer_A(silo:ms.MCSchematic, i:int):
     # layer_A = ms.MCSchematic()
     silo.setBlock((0,i,0), "minecraft:stone")
     silo.setBlock((1,i,0), "minecraft:redstone_lamp[lit=false]")
@@ -33,7 +33,7 @@ def add_layer_A(silo:ms.MCSchematic, i:int):
     # layer_A.save(".", "silo_layer_A", ms.Version.JE_1_18_2)
     return silo
 
-def add_layer_B(silo:ms.MCSchematic, i:int):
+def _add_layer_B(silo:ms.MCSchematic, i:int):
     # layer_B = ms.MCSchematic()
     silo.setBlock((0,i,0), "minecraft:stone")
     silo.setBlock((1,i,0), "minecraft:redstone_lamp[lit=false]")
@@ -47,6 +47,20 @@ def add_layer_B(silo:ms.MCSchematic, i:int):
     # layer_B.save(".", "silo_layer_B", ms.Version.JE_1_18_2)
     return silo
 
+def _reflect_x_schematic(schem:ms.MCSchematic, WIDTH:int, HEIGHT:int, LENGTH:int):
+    """
+    Reflects a schematic about the x-axis.
+
+    Wait, no need to reflect!
+    """
+    # Reflect about x-axis
+    for x in range(WIDTH):
+        for y in range(HEIGHT):
+            for z in range(LENGTH):
+                block = schem.getBlockDataAt((x, y, z))
+                schem.setBlock((WIDTH - x - 1, y, z), block)
+    return schem
+
 def generate_silo(k):
     """
     Parameters:
@@ -55,23 +69,31 @@ def generate_silo(k):
     """
     assert k > 0, "Capacity must be greater than 0."
 
-    capacity_base = 27 + (3*5)
-    capacity_layer = (27*2) + 5
+    CAPACITY_BASE = 27 + (3*5)
+    CAPACITY_LAYER = (27*2) + 5
 
-    layer_count = (k - capacity_base) // capacity_layer
+    layer_count = (k - CAPACITY_BASE) // CAPACITY_LAYER
+
+    WIDTH = 2
+    HEIGHT = layer_count + 1
+    LENGTH = 4
 
     silo = ms.MCSchematic()
-    silo = add_base_layer(silo)
+    silo = _add_base_layer(silo)
 
     # Alternate A B layers until height is reached
     for l in range(layer_count):
         if l % 2 == 0:
-            silo = add_layer_A(silo, l+1)
+            silo = _add_layer_A(silo, l+1)
         else:
-            silo = add_layer_B(silo, l+1)
+            silo = _add_layer_B(silo, l+1)
 
     silo.save(".", f"silo_{k}", ms.Version.JE_1_18_2)
 
+    # Reflect about x-axis
+    silo = _reflect_x_schematic(silo, WIDTH, HEIGHT, LENGTH)
+    silo.save(".", f"silo_{k}_reflected", ms.Version.JE_1_18_2)
+    
 
 if __name__ == "__main__":
     generate_silo(1000)

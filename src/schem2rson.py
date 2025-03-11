@@ -133,10 +133,26 @@ def schematic_to_rson(file_path, CLUSTER_COORDS=False):
         length = int(nbt_file["Length"])
         width = int(nbt_file["Width"])
         
+        schem_map = nbt_file["SchematicaMapping"]
+
+        id_to_block_schema = {int(v): k for k, v in schem_map.items()}
+        print(f'{id_to_block_schema=}')
+
+        # print(f'{schem_map=}')
+
+
         block_bytes = nbt_file["Blocks"]
         block_bytes = list(block_bytes)
-        block_ids = [int(b) for b in block_bytes]
+        # block_ids = [int(b) for b in block_bytes]
+        block_ids = [int(b) if int(b) >= 0 else int(b) + 256 for b in block_bytes]
+
+
+        print(f'{block_ids=}')
+
+
         blocks = id_to_block(block_ids)
+
+        print(f'{blocks=}')
 
         # Reformat blocks to be "block": [(x,y,z), (x,y,z), ...]
         clustered_blocks = {}
@@ -191,12 +207,12 @@ def schematic_to_rson(file_path, CLUSTER_COORDS=False):
 
 def main():
     # schem_file = "../dataset/raw/17128.litematic" 
-    schem_file = "../schem/compass.schem"
-    # schem_file = "../dataset/raw/261.schematic"
+    # schem_file = "../schem/compass.schem"
+    schem_file = "../dataset/raw/10777.schematic"
 
-    data = schem_to_rson(schem_file, CLUSTER_COORDS=True)
+    # data = schem_to_rson(schem_file, CLUSTER_COORDS=True)
     # data = litematic_to_rson(schem_file)
-    # data = schematic_to_rson(schem_file, CLUSTER_COORDS=True)
+    data = schematic_to_rson(schem_file, CLUSTER_COORDS=True)
     print(f'{data=}')
 
 if __name__ == "__main__":
