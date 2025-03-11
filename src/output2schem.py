@@ -23,21 +23,43 @@ def verify_syntax(text) -> str:
     """
 
     stack = []
+    unmatched_closing_braces = 0
+    
     for i, char in enumerate(text):
         if char in '([{':
             stack.append(char)
         elif char in ')]}':
             if not stack:
-                # If the last character is unmatched, remove it and return the text
-                if i == len(text) - 1:
-                    return text[:-1]
+                # # If the last character is unmatched, remove it and return the text
+                # if i == len(text) - 1:
+                #     return text[:-1]
+                
+                # Track unmatched braces instead of raising an error immediately
+                if char == '}':
+                    unmatched_closing_braces += 1
                 else:
                     raise ValueError(f"Unmatched closing {char} at position {i}")
-            top = stack.pop()
-            if (top == '(' and char != ')') or \
-               (top == '[' and char != ']') or \
-               (top == '{' and char != '}'):
-                raise ValueError(f"Mismatched {top} and {char} at position {i}")
+                
+
+                # # If there are unmatched closing brackets at the end, remove them
+                # while char in ')]}' and i == len(text) - 1:
+                #     text = text[:-1]
+                #     i -= 1
+                #     char = text[-1] if text else ''
+                # if not text or char in ')]}':
+                #     raise ValueError(f"Unmatched closing {char} at position {i}")
+                # else:
+                #     raise ValueError(f"Unmatched closing {char} at position {i}")
+            else:
+                top = stack.pop()
+                if (top == '(' and char != ')') or \
+                (top == '[' and char != ']') or \
+                (top == '{' and char != '}'):
+                    raise ValueError(f"Mismatched {top} and {char} at position {i}")
+    
+    if unmatched_closing_braces > 0:
+        text = text[:-unmatched_closing_braces]
+    
     if stack:
         raise ValueError(f"Unmatched opening {stack[-1]} at position {len(text)}")
     return text
@@ -85,6 +107,13 @@ def quick_check():
     json_str = """
     {"width": 5, "height": 4, "length": 7, "block_positions": {"hopper[facing=down,enabled=true]": [[2, 0, 3]], "iron_door[hinge=right,half=lower,powered=false,facing=east,open=false]": [[2, 0, 2], [2, 1, 2]], "note_block": [[2, 1, 1]], "redstone_wire[east=none,south=none,north=none,west=none,power=0]": [[3, 2, 2]], "stone_bricks": [[0, 2, 3], [1, 1, 3], [3, 1, 2], [3, 1, 3], [4, 2, 3]], "stone_slab[type=bottom]": [[2, 2, 1], [2, 2, 2], [2, 1, 4], [2, 0, 5]], "tripwire[disarmed=false,east=false,powered=false,south=false,north=false,west=false,attached=false]": [[2, 2, 3]], "tripwire_hook[powered=false,attached=false,facing=south]": [[1, 2, 3], [3, 2, 3]], "water[level=0]": [[2, 1, 3]]}}
     """
+    json_str_richer = """
+    {'width': 5, 'height': 4, 'length': 7, 'block_positions': {'chest[facing=south,type=single]': [(2, 0, 4)], 'hopper[facing=south,enabled=true]': [(2, 0, 3)], 'iron_door[hinge=right,half=lower,powered=false,facing=north,open=false]': [(2, 0, 2)], 'iron_door[hinge=right,half=upper,powered=false,facing=east,open=false]': [(2, 1, 2)], 'note_block': [(2, 1, 1)], 'redstone_wire[east=none,south=none,north=none,west=none,power=0]': [(3, 2, 2)], 'stone_brick_slab[type=bottom]': [(2, 2, 1), (2, 2, 2), (2, 1, 4), (2, 0, 5)], 'stone_bricks': [(0, 2, 3), (1, 1, 3), (3, 1, 2), (3, 1, 3), (4, 2, 3)], 'tripwire[disarmed=false,east=false,powered=false,south=false,north=false,west=false,attached=true]': [(2, 2, 3)], 'tripwire_hook[powered=false,attached=true,facing=east]': [(1, 2, 3)], 'tripwire_hook[powered=false,attached=true,facing=west]': [(3, 2, 3)], 'water[level=0]': [(2, 1, 3)]}}
+    """
+    # replace ' with "
+    json_str = json_str_richer.replace("'", '"')
+    print(f'json_str: {json_str}')
+
     data = json.loads(json_str)
     print(data)
     # Read as json, construct schematic 
@@ -119,31 +148,31 @@ def blocks_to_schem(blocks):
     
 
 if __name__ == '__main__':
-    quick_check()
+    # quick_check()
 
-    # # import sys
-    # # if len(sys.argv) != 2:
-    # #     print("Usage: python output2schem.py <filename>")
-    # #     sys.exit(1)
-    # # filename = sys.argv[1]
+    # import sys
+    # if len(sys.argv) != 2:
+    #     print("Usage: python output2schem.py <filename>")
+    #     sys.exit(1)
+    # filename = sys.argv[1]
 
-    # # Bad Syntax
-    # # filename = '../llm_output/Title_ 3x3 piston door Width_ 7 Height_ 9 Length_ 3'
+    # Bad Syntax
+    # filename = '../llm_output/Title_ 3x3 piston door Width_ 7 Height_ 9 Length_ 3'
     
-    # # Good Syntax
-    # # filename = '../llm_output/Title_ Compact Angle Cannon Width_ 6 Height_ 4 Length_ 6'
-    # filename = '../llm_output/Title_ FarmFish Width_ 5 Height_ 4 Length_ 7'
+    # Good Syntax
+    # filename = '../llm_output/Title_ Compact Angle Cannon Width_ 6 Height_ 4 Length_ 6'
+    filename = '../llm_output/Title_ FarmFish Width_ 5 Height_ 4 Length_ 7'
 
-    # text = file_to_text(filename)
-    # text = verify_syntax(text)
-    # blocks = text_to_blocks(text)
-    # # print(blocks)
+    text = file_to_text(filename)
+    text = verify_syntax(text)
+    blocks = text_to_blocks(text)
+    # print(blocks)
 
-    # schem = blocks_to_schem(blocks)
+    schem = blocks_to_schem(blocks)
 
-    # # Save the name, between Title_ and Width_
-    # name = filename.split('Title_')[1].split('Width_')[0].strip()
-    # schem.save(f"../llm_output_processed", name, mcschematic.Version.JE_1_18_2)
-    # print(f"Saved {filename}")
+    # Save the name, between Title_ and Width_
+    name = filename.split('Title_')[1].split('Width_')[0].strip()
+    schem.save(f"../llm_output_processed", name, mcschematic.Version.JE_1_18_2)
+    print(f"Saved {filename}")
 
     
