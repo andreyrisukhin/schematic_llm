@@ -5,6 +5,10 @@ Then assemble the blocks into a schematic.
 
 from typing import Dict, List, Tuple
 
+import litemapy as lm
+# import minecraftschematics as ms
+import mcschematic
+
 def file_to_text(filename):
     with open(filename, 'r') as f:
         text = f.read()
@@ -64,9 +68,38 @@ def text_to_blocks(text) -> Dict[str, List[Tuple[int, int, int]]]:
         blocks[key] = coords
     return blocks
 
-def blocks_to_schem(blocks):
-    """Given a dict of str blocks and their coordinates, return a schematic."""
+def get_dims(blocks) -> Tuple[int, int, int]:
+    """Given a dict of blocks and their coordinates, return the height."""
+    width = 0
+    length = 0
+    height = 0
+    for coords in blocks.values():
+        for x, y, z in coords:
+            height = max(height, y)
+            width = max(width, x)
+            length = max(length, z)
+    return width, height, length
 
+def blocks_to_schem(blocks):
+    # """Given a dict of str blocks and their coordinates, return a schematic."""
+    # width, height, length = get_dims(blocks)
+    # reg = lm.Region(0,0,0, width, height, length)
+    # schem = lm.Schematic(reg)
+    # for key, coords in blocks.items():
+    #     for x, y, z in coords:
+    #         schem.register_block(x, y, z, key)
+
+    
+    # schem = lm.Schematic()
+    # for key, coords in blocks.items():
+    #     for x, y, z in coords:
+    #         schem.reg
+
+    schem = mcschematic.MCSchematic()
+    for key, coords in blocks.items():
+        for x, y, z in coords:
+            schem.setBlock((x, y, z), "minecraft:" + key)
+    return schem
     
 
 if __name__ == '__main__':
@@ -80,10 +113,19 @@ if __name__ == '__main__':
     # filename = '../llm_output/Title_ 3x3 piston door Width_ 7 Height_ 9 Length_ 3'
     
     # Good Syntax
-    filename = '../llm_output/Title_ Compact Angle Cannon Width_ 6 Height_ 4 Length_ 6'
-    # filename = '../llm_output/Title_ FarmFish Width_ 5 Height_ 4 Length_ 7'
+    # filename = '../llm_output/Title_ Compact Angle Cannon Width_ 6 Height_ 4 Length_ 6'
+    filename = '../llm_output/Title_ FarmFish Width_ 5 Height_ 4 Length_ 7'
 
     text = file_to_text(filename)
     text = verify_syntax(text)
     blocks = text_to_blocks(text)
-    print(blocks)
+    # print(blocks)
+
+    schem = blocks_to_schem(blocks)
+
+    # Save the name, between Title_ and Width_
+    name = filename.split('Title_')[1].split('Width_')[0].strip()
+    schem.save(f"../llm_output_processed", name, mcschematic.Version.JE_1_18_2)
+    print(f"Saved {filename}")
+
+    
