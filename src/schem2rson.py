@@ -15,19 +15,22 @@ from nbtlib import File
 
 from alpha_materials import id_to_block
 
+
 def schem_to_rson(file_path, CLUSTER_COORDS=False):
     """"
     Converts a .schem file to a rson file.
     """
-    if CLUSTER_COORDS: # Reformat palette and blocks to be "block": [(x,y,z), (x,y,z), ...]
+    if CLUSTER_COORDS:  # Reformat palette and blocks to be "block": [(x,y,z), (x,y,z), ...]
         nbt_file = nbtlib.load(file_path)
         schem = nbt_file["Schematic"]
         blocks = schem["Blocks"]
-        rson_palette = {key: int(value) for key, value in blocks["Palette"].items()}
+        rson_palette = {key: int(value)
+                        for key, value in blocks["Palette"].items()}
         # print(f'{rson_palette=}')
 
-        rson_data = [int(value) for value in blocks["Data"]] # Convert byte to int
-        
+        rson_data = [int(value)
+                     for value in blocks["Data"]]  # Convert byte to int
+
         clustered_blocks = {}
         for block, block_id in rson_palette.items():
             clustered_blocks[block] = []
@@ -58,11 +61,13 @@ def schem_to_rson(file_path, CLUSTER_COORDS=False):
 
     else:
         nbt_file = nbtlib.load(file_path)
-        
+
         schem = nbt_file["Schematic"]
         blocks = schem["Blocks"]
-        rson_palette = {key: int(value) for key, value in blocks["Palette"].items()}
-        rson_data = [int(value) for value in blocks["Data"]] # Convert byte to int
+        rson_palette = {key: int(value)
+                        for key, value in blocks["Palette"].items()}
+        rson_data = [int(value)
+                     for value in blocks["Data"]]  # Convert byte to int
 
         data = {
             "width": int(schem["Width"]),
@@ -73,7 +78,8 @@ def schem_to_rson(file_path, CLUSTER_COORDS=False):
         }
 
     return data
-        
+
+
 def litematic_to_rson(file_path):
     nbt_file = nbtlib.load(file_path)
     # print(f'{nbt_file=}')
@@ -112,7 +118,6 @@ def litematic_to_rson(file_path):
 
     # rson_data_3d = np.reshape(block_states, (x, y, z)).tolist()
 
-
     # print(f'{block_states=}')
     # print(f'{palette=}')
 
@@ -127,46 +132,42 @@ def litematic_to_rson(file_path):
 
     return data
 
+
 def schematic_to_rson(file_path, CLUSTER_COORDS=False):
 
-    if CLUSTER_COORDS: # Reformat palette and blocks to be "block": [(x,y,z), (x,y,z), ...]
+    # Reformat palette and blocks to be "block": [(x,y,z), (x,y,z), ...]
+    if CLUSTER_COORDS:
         nbt_file = nbtlib.load(file_path)
 
         height = int(nbt_file["Height"])
         length = int(nbt_file["Length"])
         width = int(nbt_file["Width"])
-        
+
         schem_map = nbt_file["SchematicaMapping"]
 
         id_to_block_schema = {int(v): k for k, v in schem_map.items()}
-        print(f'{id_to_block_schema=}')
 
         # print(f'{schem_map=}')
 
-
         block_bytes = nbt_file["Blocks"]
         block_bytes = list(block_bytes)
-        # block_ids = [int(b) for b in block_bytes]
-        block_ids = [int(b) if int(b) >= 0 else int(b) + 256 for b in block_bytes]
-
-
-        print(f'{block_ids=}')
-
-
+        block_ids = [int(b) if int(b) >= 0 else int(b) +
+                     256 for b in block_bytes]
         blocks = id_to_block(block_ids)
-
-        print(f'{blocks=}')
+        assert len(blocks) == len(block_ids) == height * length * width
 
         # Reformat blocks to be "block": [(x,y,z), (x,y,z), ...]
         clustered_blocks = {}
         for block in blocks:
             clustered_blocks[block] = []
 
-        for i, block in enumerate(blocks):
-            x = i % width
-            y = (i // width) % height
-            z = i // (width * height)
-            clustered_blocks[block].append((x, y, z))
+        blocks = np.array(blocks).reshape((height, length, width))
+
+        for i in range(width):
+            for j in range(length):
+                for k in range(height):
+                    block = blocks[k, j, i]
+                    clustered_blocks[block].append((i, k, j))
 
         # Sort clustered_blocks by alphabetical order
         clustered_blocks = dict(sorted(clustered_blocks.items()))
@@ -187,7 +188,7 @@ def schematic_to_rson(file_path, CLUSTER_COORDS=False):
         height = int(nbt_file["Height"])
         length = int(nbt_file["Length"])
         width = int(nbt_file["Width"])
-        
+
         block_bytes = nbt_file["Blocks"]
         block_bytes = list(block_bytes)
         block_ids = [int(b) for b in block_bytes]
@@ -220,6 +221,7 @@ def main():
 
     
     print(f'{data=}')
+
 
 if __name__ == "__main__":
     main()
