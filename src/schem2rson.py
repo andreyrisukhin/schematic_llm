@@ -13,7 +13,7 @@ import numpy as np
 
 from nbtlib import File
 
-from alpha_materials import id_to_block
+from alpha_materials import id_to_block, id_to_block_fr
 
 
 def schem_to_rson(file_path, CLUSTER_COORDS=False):
@@ -147,11 +147,25 @@ def schematic_to_rson(file_path, CLUSTER_COORDS=False):
         # id_to_block_schema = {int(v): k for k, v in schem_map.items()}
         # print(f'{id_to_block_schema=}')
 
+        data_bytes = nbt_file["Data"]
+        data_bytes = list(data_bytes)
+        data_field = [int(b) if int(b) >= 0 else int(b) +
+                     256 for b in data_bytes]
+        print(f'{data_field=}')
+
         block_bytes = nbt_file["Blocks"]
         block_bytes = list(block_bytes)
         block_ids = [int(b) if int(b) >= 0 else int(b) +
                      256 for b in block_bytes]
-        blocks = id_to_block(block_ids)
+        
+        print(f'{len(block_ids)=}, {len(data_field)=}')      
+        # Zip data_field and block_ids into a string of "block_id:data_field"
+        matched_info = [f"{block_id}:{data_field[i]}" for i, block_id in enumerate(block_ids)]
+        print(f'{matched_info=}')  
+
+
+        # blocks = id_to_block(block_ids)
+        blocks = id_to_block_fr(matched_info)
         assert len(blocks) == len(block_ids) == height * length * width
 
         # Reformat blocks to be "block": [(x,y,z), (x,y,z), ...]

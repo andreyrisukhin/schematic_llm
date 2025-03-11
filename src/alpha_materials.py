@@ -2,6 +2,8 @@
 Convert alpha materials to block states
 """
 
+from typing import List
+
 MAP = {'0:0': 'air',
 	'1:0': 'stone',
 	'1:1': 'granite',
@@ -1685,6 +1687,16 @@ MAP = {'0:0': 'air',
 	'255:2': 'structure_block[mode=corner]',
 	'255:3': 'structure_block[mode=data]',
 }
+
+def id_to_block_fr(block_strings: List[str]) -> List[str]:
+    """
+    Using the "block_data:data_field" format, no heuristics!
+    """
+    blocks = []
+    for i,b in enumerate(block_strings):
+        block = MAP.get(b)
+        blocks.append(block)
+    return blocks
 
 def id_to_block(block_ids):
     # blocks = [MAP.get(str(i)) for i in block_ids]
