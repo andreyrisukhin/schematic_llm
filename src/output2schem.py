@@ -8,6 +8,7 @@ from typing import Dict, List, Tuple
 import litemapy as lm
 # import minecraftschematics as ms
 import mcschematic
+import json
 
 def file_to_text(filename):
     with open(filename, 'r') as f:
@@ -80,6 +81,21 @@ def get_dims(blocks) -> Tuple[int, int, int]:
             length = max(length, z)
     return width, height, length
 
+def quick_check():
+    json_str = """
+    {"width": 5, "height": 4, "length": 7, "block_positions": {"hopper[facing=down,enabled=true]": [[2, 0, 3]], "iron_door[hinge=right,half=lower,powered=false,facing=east,open=false]": [[2, 0, 2], [2, 1, 2]], "note_block": [[2, 1, 1]], "redstone_wire[east=none,south=none,north=none,west=none,power=0]": [[3, 2, 2]], "stone_bricks": [[0, 2, 3], [1, 1, 3], [3, 1, 2], [3, 1, 3], [4, 2, 3]], "stone_slab[type=bottom]": [[2, 2, 1], [2, 2, 2], [2, 1, 4], [2, 0, 5]], "tripwire[disarmed=false,east=false,powered=false,south=false,north=false,west=false,attached=false]": [[2, 2, 3]], "tripwire_hook[powered=false,attached=false,facing=south]": [[1, 2, 3], [3, 2, 3]], "water[level=0]": [[2, 1, 3]]}}
+    """
+    data = json.loads(json_str)
+    print(data)
+    # Read as json, construct schematic 
+    blocks = data['block_positions']
+    schem = mcschematic.MCSchematic()
+    for key, coords in blocks.items():
+        for x, y, z in coords:
+            schem.setBlock((x, y, z), "minecraft:" + key)
+    # return schem
+    schem.save(f"../llm_output_processed", "quick_check", mcschematic.Version.JE_1_18_2)
+
 def blocks_to_schem(blocks):
     # """Given a dict of str blocks and their coordinates, return a schematic."""
     # width, height, length = get_dims(blocks)
@@ -103,29 +119,31 @@ def blocks_to_schem(blocks):
     
 
 if __name__ == '__main__':
-    # import sys
-    # if len(sys.argv) != 2:
-    #     print("Usage: python output2schem.py <filename>")
-    #     sys.exit(1)
-    # filename = sys.argv[1]
+    quick_check()
 
-    # Bad Syntax
-    # filename = '../llm_output/Title_ 3x3 piston door Width_ 7 Height_ 9 Length_ 3'
+    # # import sys
+    # # if len(sys.argv) != 2:
+    # #     print("Usage: python output2schem.py <filename>")
+    # #     sys.exit(1)
+    # # filename = sys.argv[1]
+
+    # # Bad Syntax
+    # # filename = '../llm_output/Title_ 3x3 piston door Width_ 7 Height_ 9 Length_ 3'
     
-    # Good Syntax
-    # filename = '../llm_output/Title_ Compact Angle Cannon Width_ 6 Height_ 4 Length_ 6'
-    filename = '../llm_output/Title_ FarmFish Width_ 5 Height_ 4 Length_ 7'
+    # # Good Syntax
+    # # filename = '../llm_output/Title_ Compact Angle Cannon Width_ 6 Height_ 4 Length_ 6'
+    # filename = '../llm_output/Title_ FarmFish Width_ 5 Height_ 4 Length_ 7'
 
-    text = file_to_text(filename)
-    text = verify_syntax(text)
-    blocks = text_to_blocks(text)
-    # print(blocks)
+    # text = file_to_text(filename)
+    # text = verify_syntax(text)
+    # blocks = text_to_blocks(text)
+    # # print(blocks)
 
-    schem = blocks_to_schem(blocks)
+    # schem = blocks_to_schem(blocks)
 
-    # Save the name, between Title_ and Width_
-    name = filename.split('Title_')[1].split('Width_')[0].strip()
-    schem.save(f"../llm_output_processed", name, mcschematic.Version.JE_1_18_2)
-    print(f"Saved {filename}")
+    # # Save the name, between Title_ and Width_
+    # name = filename.split('Title_')[1].split('Width_')[0].strip()
+    # schem.save(f"../llm_output_processed", name, mcschematic.Version.JE_1_18_2)
+    # print(f"Saved {filename}")
 
     

@@ -100,6 +100,9 @@ def litematic_to_rson(file_path):
     block_states = [int(b) for b in block_states]
     # Note, some longs appear to be corrupt in the file (1264455964128444416)
 
+    print(f'{block_states=}')
+
+
     if any([len(str(b)) > 4 for b in block_states]):
         print(f'Corrupt block states detected in {file_path}')
         return None
@@ -207,12 +210,15 @@ def schematic_to_rson(file_path, CLUSTER_COORDS=False):
 
 def main():
     # schem_file = "../dataset/raw/17128.litematic" 
-    # schem_file = "../schem/compass.schem"
-    schem_file = "../dataset/raw/10777.schematic"
-
-    # data = schem_to_rson(schem_file, CLUSTER_COORDS=True)
     # data = litematic_to_rson(schem_file)
+    
+    # schem_file = "../schem/compass.schem"
+    # data = schem_to_rson(schem_file, CLUSTER_COORDS=True)
+    
+    schem_file = "../dataset/raw/10777.schematic"
     data = schematic_to_rson(schem_file, CLUSTER_COORDS=True)
+
+    
     print(f'{data=}')
 
 if __name__ == "__main__":
