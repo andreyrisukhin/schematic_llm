@@ -143,11 +143,9 @@ def schematic_to_rson(file_path, CLUSTER_COORDS=False):
         length = int(nbt_file["Length"])
         width = int(nbt_file["Width"])
 
-        schem_map = nbt_file["SchematicaMapping"]
-
-        id_to_block_schema = {int(v): k for k, v in schem_map.items()}
-
-        # print(f'{schem_map=}')
+        # schem_map = nbt_file["SchematicaMapping"]
+        # id_to_block_schema = {int(v): k for k, v in schem_map.items()}
+        # print(f'{id_to_block_schema=}')
 
         block_bytes = nbt_file["Blocks"]
         block_bytes = list(block_bytes)
